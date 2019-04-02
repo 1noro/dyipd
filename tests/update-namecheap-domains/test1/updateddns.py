@@ -44,7 +44,7 @@ def http_request(web,host,bhost,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))
 
-    sdata = b'GET /' + bweb + b' HTTP/1.0\r\n'
+    sdata = b'GET /' + bweb + b' HTTP/1.1\r\n'
     if verbose: print('[--> ] ', repr(sdata))
     sock.sendall(sdata)
     sdata = b'Host: ' + bhost + b'\r\n'
