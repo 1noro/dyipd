@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# by inoro
+cred.txt
+mailto.txt
+mailfrom.txt
