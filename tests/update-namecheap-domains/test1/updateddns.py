@@ -7,7 +7,7 @@ import datetime
 import xml.etree.ElementTree as ET
 
 ### GLOBAL VARIABLES ###########################################################
-verbose = True
+verbose = False
 
 host = 'dynamicdns.park-your-domain.com'
 bhost = host.encode('utf-8')
