@@ -2,7 +2,6 @@
 ### IMPORTS ####################################################################
 import socket
 import datetime
-# import time
 
 import xml.etree.ElementTree as ET
 
@@ -75,7 +74,6 @@ def http_request(web,host,bhost,port):
 
 for domain in domains:
     for dhost in domain["hosts"]:
-        # time.sleep(1)
         web = 'update?domain='+domain["dname"]+'&password='+domain["dpass"]+'&host='+dhost
         if http_request(web,host,bhost,port):
             print('[ OK ] '+dhost+'.'+domain["dname"])
