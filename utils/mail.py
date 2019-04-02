@@ -1,1 +1,2 @@
-# mail.py
+# utils.mail
+# by inoro

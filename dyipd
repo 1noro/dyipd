@@ -1,1 +1,10 @@
+#!/usr/bin/python3
+
 # dyipd
+# by inoro
+
+import sys
+import utils
+
+if __name__ == "__main__":
+    utils.main()
