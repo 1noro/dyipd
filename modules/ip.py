@@ -57,7 +57,7 @@ def check_ip(file, verbose):
             if verbose >= 2: print("[INFO] '"+file+"' saved with the new ip")
         else:
             myip = mylastip
-            if verbose >= 1: print("[INFO] the ip has not changed")
+            if verbose >= 1: print("[INFO] the ip hasn't changed")
     else:
         myip_change = True
         print("[WARN] '"+file+"' not found, creating one...")
