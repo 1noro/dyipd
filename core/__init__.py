@@ -21,7 +21,7 @@ LASTIP_FILE = "data/lastip.txt"
 
 
 ### AUTOMATIC VARIABLES ########################################################
-verbose = False
+verbose = 0
 sendmail = False
 domains = []
 mailfrom_user = b''
@@ -38,8 +38,8 @@ def options_definition():
     parser = OptionParser()
     parser.add_option(
         "-v", "--verbose", dest="verbose",
-        action="store_true", default=False,
-        help="print status messages to stdout.")
+        help="print status messages to stdout. There are 3 levels of detail.",
+        metavar="LEVEL")
     parser.add_option(
         "-m", "--sendmail", dest="sendmail",
         action="store_true", default=False,
@@ -88,7 +88,7 @@ def main():
     # --- Parameters -----------------------------------------------------------
     (options, args) = options_definition()
     # --- verbose
-    verbose = options.verbose
+    verbose = int(options.verbose)
     # --- sendmail
     sendmail = options.sendmail
 
@@ -100,7 +100,7 @@ def main():
         print("[FAIL] '"+DDNS_FILE+"' not found")
         sys.exit()
 
-    if verbose: list_configured_domains(domains)
+    if verbose == 2: list_configured_domains(domains)
 
     # --- MAILFROM_FILE
     if sendmail:
@@ -114,7 +114,7 @@ def main():
             print("[FAIL] '"+MAILFROM_FILE+"' not found")
             sys.exit()
 
-        if verbose:
+        if verbose == 2:
             print("[INFO] configured mailfrom: "+mailfrom_mail.decode('utf-8'))
 
     # --- MAILSTO_FILE
@@ -129,8 +129,10 @@ def main():
             print("[FAIL] '"+MAILSTO_FILE+"' not found")
             sys.exit()
 
-        if verbose: list_mailsto(mailsto)
+        if verbose == 2: list_mailsto(mailsto)
 
     # --- CHECK IP -------------------------------------------------------------
     (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
-    print(myip, myip_change)
+    # print(myip, myip_change)
+    # --- CHECK IP -------------------------------------------------------------
+    if myip_change: ddns.update(domains, verbose)
