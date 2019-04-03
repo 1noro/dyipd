@@ -43,7 +43,9 @@ def main():
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
-    verbose = int(options.verbose)
+    verbose = 0
+    if options.verbose :
+        verbose = int(options.verbose)
     # --- sendmail
     sendmail = options.sendmail
     # --- sendmail

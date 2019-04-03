@@ -33,7 +33,8 @@ def get_my_ip_from_gmail(verbose):
     sock.close()
 
     regex = re.compile(r'\[(.*)\]')
-    myip = regex.search(ehlo_rdata.decode('utf-8'))[1]
+    # print(regex.search(ehlo_rdata.decode('utf-8')).group(1))
+    myip = regex.search(ehlo_rdata.decode('utf-8')).group(1)
     return myip
 
 def check_ip(file, verbose):
