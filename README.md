@@ -1,4 +1,4 @@
-# dynip-reminder
+# dyipd
 
 falta cubrir errores como:
 - que no haya conexón a internet
