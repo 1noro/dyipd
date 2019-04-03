@@ -31,12 +31,7 @@ setup(
     long_description=open("README.md").read(),
 
     # Dependent packages (distributions)
-    install_requires=[
-        "socket",
-        "ssl",
-        "base64",
-        "datetime"
-    ],
+    install_requires=[],
 
     data_files=[
         ('', [
@@ -47,7 +42,7 @@ setup(
 
     entry_points={  # Optional
         "console_scripts": [
-            "dyipd=utils:main"
+            "dyipd=core:main"
         ]
     },
 

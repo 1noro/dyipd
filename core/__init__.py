@@ -1,4 +1,4 @@
-# utils.__init__
+# core.__init__
 # by inoro
 
 ### IMPORTS ####################################################################
@@ -7,11 +7,16 @@ import os
 
 from optparse import OptionParser
 
+import modules
+from modules import ip
+from modules import ddns
+from modules import mail
+
 ### EDITABLE VARIABLES #########################################################
 DDNS_FILE = "data/namecheap-data.txt"
 MAILFROM_FILE = "data/mailfrom.txt"
 MAILSTO_FILE = "data/mailsto.txt"
-TABULAR = " "*12
+TABULAR = " "*8
 
 ### AUTOMATIC VARIABLES ########################################################
 verbose = False
@@ -25,6 +30,18 @@ mailsto = []
 ### NON EDITABLE VARIABLES #####################################################
 
 ### FUNCTIONS ##################################################################
+def options_definition():
+    parser = OptionParser()
+    parser.add_option(
+        "-v", "--verbose", dest="verbose",
+        action="store_true", default=False,
+        help="print status messages to stdout.")
+    parser.add_option(
+        "-m", "--sendmail", dest="sendmail",
+        action="store_true", default=False,
+        help="send a mail when dynamic ip changes.")
+    return parser.parse_args()
+
 def compose_domains(file):
     out = []
     with open(file) as f: ncdata = f.read()
@@ -65,25 +82,14 @@ def list_mailsto(mailsto):
 ### MAIN #######################################################################
 def main():
     # --- Parameters -----------------------------------------------------------
-    parser = OptionParser()
-    parser.add_option(
-        "-v", "--verbose", dest="verbose",
-        action="store_true", default=False,
-        help="print status messages to stdout.")
-    parser.add_option(
-        "-m", "--sendmail", dest="sendmail",
-        action="store_true", default=False,
-        help="send a mail when dynamic ip changes.")
-
-    (options, args) = parser.parse_args()
-
+    (options, args) = options_definition()
     # --- verbose
     verbose = options.verbose
     # --- sendmail
     sendmail = options.sendmail
 
-    # @@@ CHECK CONFIG @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    # --- DDNS_FILE ------------------------------------------------------------
+    # --- CHECK CONFIG ---------------------------------------------------------
+    # --- DDNS_FILE
     if os.path.isfile(DDNS_FILE):
         domains = compose_domains(DDNS_FILE)
     else:
@@ -92,7 +98,7 @@ def main():
 
     if verbose: list_configured_domains(domains)
 
-    # --- MAILFROM_FILE --------------------------------------------------------
+    # --- MAILFROM_FILE
     if sendmail:
         if os.path.isfile(MAILFROM_FILE):
             with open(MAILFROM_FILE) as f: cred = f.read()
@@ -107,7 +113,7 @@ def main():
         if verbose:
             print("[INFO] configured mailfrom: "+mailfrom_mail.decode('utf-8'))
 
-    # --- MAILSTO_FILE ---------------------------------------------------------
+    # --- MAILSTO_FILE
     if sendmail:
         if os.path.isfile(MAILSTO_FILE):
             with open(MAILSTO_FILE) as f: mailsto_cont = f.read()
@@ -120,3 +126,6 @@ def main():
             sys.exit()
 
         if verbose: list_mailsto(mailsto)
+
+    # --- CHECK IP -------------------------------------------------------------
+    ip.main()

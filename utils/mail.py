@@ -1,2 +1,0 @@
-# utils.mail
-# by inoro

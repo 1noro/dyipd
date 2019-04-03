@@ -1,2 +1,0 @@
-# utils.ddns
-# by inoro
