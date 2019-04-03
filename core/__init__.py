@@ -5,7 +5,8 @@
 import sys
 import os
 
-from optparse import OptionParser
+import core
+from core import utils
 
 import modules
 from modules import ip
@@ -18,7 +19,6 @@ DDNS_FILE = "data/namecheap-data.txt"
 MAILFROM_FILE = "data/mailfrom.txt"
 MAILSTO_FILE = "data/mailsto.txt"
 LASTIP_FILE = "data/lastip.txt"
-
 
 ### AUTOMATIC VARIABLES ########################################################
 verbose = 0
@@ -33,60 +33,10 @@ myip_change = False
 
 ### NON EDITABLE VARIABLES #####################################################
 
-### FUNCTIONS ##################################################################
-def options_definition():
-    parser = OptionParser()
-    parser.add_option(
-        "-v", "--verbose", dest="verbose",
-        help="print status messages to stdout. There are 3 levels of detail.",
-        metavar="LEVEL")
-    parser.add_option(
-        "-m", "--sendmail", dest="sendmail",
-        action="store_true", default=False,
-        help="send a mail when dynamic ip changes.")
-    return parser.parse_args()
-
-def compose_domains(file):
-    out = []
-    with open(file) as f: ncdata = f.read()
-    ncdata_rows = ncdata.split('\n')
-    domain_row = True
-    domain_num = 0
-    for row in ncdata_rows:
-        if domain_row and (row != ''):
-            drarr = row.split('::')
-            out.append({
-                "dname":drarr[0],
-                "dpass":drarr[1],
-                "hosts":[]
-            })
-            domain_row = False
-        elif (row != ''):
-            out[domain_num]["hosts"].append(row)
-        elif (row == ''):
-            domain_row = True
-            domain_num += 1
-    return out
-
-def list_configured_domains(domains):
-    print("[INFO] configured domains:")
-    str = ""
-    for d in domains:
-        str = d["dname"]+" ( "
-        for h in d["hosts"]:
-            str += h+" "
-        str += ")"
-        print(TABULAR+str)
-
-def list_mailsto(mailsto):
-    print("[INFO] configured mails to notify:")
-    for m in mailsto:
-        print(TABULAR+m.decode('utf-8'))
-
 ### MAIN #######################################################################
 def main():
     # --- Parameters -----------------------------------------------------------
-    (options, args) = options_definition()
+    (options, args) = utils.options_definition()
     # --- verbose
     verbose = int(options.verbose)
     # --- sendmail
@@ -95,12 +45,12 @@ def main():
     # --- CHECK CONFIG ---------------------------------------------------------
     # --- DDNS_FILE
     if os.path.isfile(DDNS_FILE):
-        domains = compose_domains(DDNS_FILE)
+        domains = utils.compose_domains(DDNS_FILE)
     else:
         print("[FAIL] '"+DDNS_FILE+"' not found")
         sys.exit()
 
-    if verbose >= 2: list_configured_domains(domains)
+    if verbose >= 2: utils.list_configured_domains(domains, TABULAR)
 
     # --- MAILFROM_FILE
     if sendmail:
@@ -129,7 +79,7 @@ def main():
             print("[FAIL] '"+MAILSTO_FILE+"' not found")
             sys.exit()
 
-        if verbose >= 2: list_mailsto(mailsto)
+        if verbose >= 2: utils.list_mailsto(mailsto, TABULAR)
 
     # --- CHECK IP -------------------------------------------------------------
     (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
