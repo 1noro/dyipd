@@ -133,6 +133,6 @@ def main():
 
     # --- CHECK IP -------------------------------------------------------------
     (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
-    # print(myip, myip_change)
-    # --- CHECK IP -------------------------------------------------------------
+
+    # --- UPDATE DDNS ----------------------------------------------------------
     if myip_change: ddns.update(domains, verbose)
