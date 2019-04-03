@@ -102,7 +102,8 @@ def main():
 
         # --- ENDO OF LOOP CHECK -----------------------------------------------
         if loop:
-            if verbose >= 1: print("[LOOP] end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
+            if verbose >= 1:
+                print("[LOOP] end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
             time.sleep(LOOP_TIME)
         else:
             break
