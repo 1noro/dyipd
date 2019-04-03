@@ -13,10 +13,12 @@ from modules import ddns
 from modules import mail
 
 ### EDITABLE VARIABLES #########################################################
+TABULAR = " "*8
 DDNS_FILE = "data/namecheap-data.txt"
 MAILFROM_FILE = "data/mailfrom.txt"
 MAILSTO_FILE = "data/mailsto.txt"
-TABULAR = " "*8
+LASTIP_FILE = "data/lastip.txt"
+
 
 ### AUTOMATIC VARIABLES ########################################################
 verbose = False
@@ -26,6 +28,8 @@ mailfrom_user = b''
 mailfrom_pass = b''
 mailfrom_mail = b''
 mailsto = []
+myip = ''
+myip_change = False
 
 ### NON EDITABLE VARIABLES #####################################################
 
@@ -128,4 +132,5 @@ def main():
         if verbose: list_mailsto(mailsto)
 
     # --- CHECK IP -------------------------------------------------------------
-    ip.main()
+    (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
+    print(myip, myip_change)
