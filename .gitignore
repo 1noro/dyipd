@@ -106,5 +106,6 @@ venv.bak/
 # by inoro
 cred.txt
 mailto.txt
+mailsto.txt
 mailfrom.txt
 namecheap-data.txt
