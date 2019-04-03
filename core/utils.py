@@ -15,6 +15,10 @@ def options_definition():
         "-m", "--sendmail", dest="sendmail",
         action="store_true", default=False,
         help="send a mail when dynamic ip changes.")
+    parser.add_option(
+        "-l", "--loop", dest="loop",
+        action="store_true", default=False,
+        help="run the program in a loop.")
     return parser.parse_args()
 
 def compose_domains(file):

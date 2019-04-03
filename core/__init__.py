@@ -4,6 +4,7 @@
 ### IMPORTS ####################################################################
 import sys
 import os
+import time
 
 import core
 from core import utils
@@ -14,6 +15,9 @@ from modules import ddns
 from modules import mail
 
 ### EDITABLE VARIABLES #########################################################
+# 1m = 60s, 5m = 300s, 10m = 600s, 15m = 900s, 30m = 1800s
+# 1h = 3600s, 2h = 7200, 5h = 18000s, 12h = 43200s, 24h = 86400s, 48h = 172800s
+LOOP_TIME = 300
 TABULAR = " "*8
 DDNS_FILE = "data/namecheap-data.txt"
 MAILFROM_FILE = "data/mailfrom.txt"
@@ -23,6 +27,7 @@ LASTIP_FILE = "data/lastip.txt"
 ### AUTOMATIC VARIABLES ########################################################
 verbose = 0
 sendmail = False
+loop = False
 domains = []
 mailfrom_user = b''
 mailfrom_pass = b''
@@ -41,6 +46,8 @@ def main():
     verbose = int(options.verbose)
     # --- sendmail
     sendmail = options.sendmail
+    # --- sendmail
+    loop = options.loop
 
     # --- CHECK CONFIG ---------------------------------------------------------
     # --- DDNS_FILE
@@ -81,8 +88,23 @@ def main():
 
         if verbose >= 2: utils.list_mailsto(mailsto, TABULAR)
 
-    # --- CHECK IP -------------------------------------------------------------
-    (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
+    while True:
+        # --- CHECK IP ---------------------------------------------------------
+        (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
 
-    # --- UPDATE DDNS ----------------------------------------------------------
-    if myip_change: ddns.update(domains, verbose)
+        # --- UPDATE DDNS ------------------------------------------------------
+        if myip_change: ddns.update(domains, verbose)
+
+        # --- NOTIFY VIA EMAIL -------------------------------------------------
+        if sendmail and myip_change:
+            if verbose >= 1: print("[INFO] sending notification email...")
+            mail.send(mailfrom_user, mailfrom_pass, mailfrom_mail, mailsto, myip, verbose)
+
+        # --- ENDO OF LOOP CHECK -----------------------------------------------
+        if loop:
+            if verbose >= 1: print("[LOOP] end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
+            time.sleep(LOOP_TIME)
+        else:
+            break
+
+    if verbose >= 1: print("[EXIT] end of the execution")
