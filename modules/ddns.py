@@ -18,17 +18,17 @@ def namecheap_http_update(web, verbose):
     sock.connect((host, port))
 
     sdata = b'GET /' + bweb + b' HTTP/1.1\r\n'
-    if verbose == 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: print('[--> ] ', repr(sdata))
     sock.sendall(sdata)
     sdata = b'Host: ' + bhost + b'\r\n'
-    if verbose == 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: print('[--> ] ', repr(sdata))
     sock.sendall(sdata)
     sdata = b'\r\n'
-    if verbose == 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: print('[--> ] ', repr(sdata))
     sock.sendall(sdata)
     rdata = sock.recv(1024)
     sock.close()
-    if verbose == 3: print('[ <--] ', repr(rdata))
+    if verbose >= 3: print('[ <--] ', repr(rdata))
 
     rdataarr = rdata.decode("utf-8").split('\r\n')
     expected = 'HTTP/1.1 200 OK'
@@ -43,11 +43,11 @@ def namecheap_http_update(web, verbose):
     return out
 
 def update(domains, verbose):
-    if verbose == 1: print("[INFO] updating ip in the dynamic dns")
+    if verbose >= 1: print("[INFO] updating ip in the dynamic dns")
     for domain in domains:
         for dhost in domain["hosts"]:
             web = 'update?domain='+domain["dname"]+'&password='+domain["dpass"]+'&host='+dhost
             if namecheap_http_update(web, verbose):
-                if verbose == 1: print('[ OK ] '+dhost+'.'+domain["dname"])
+                if verbose >= 1: print('[ OK ] '+dhost+'.'+domain["dname"])
             else:
-                if verbose == 1: print('[FAIL] '+dhost+'.'+domain["dname"])
+                if verbose >= 1: print('[FAIL] '+dhost+'.'+domain["dname"])

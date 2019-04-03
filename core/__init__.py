@@ -100,7 +100,7 @@ def main():
         print("[FAIL] '"+DDNS_FILE+"' not found")
         sys.exit()
 
-    if verbose == 2: list_configured_domains(domains)
+    if verbose >= 2: list_configured_domains(domains)
 
     # --- MAILFROM_FILE
     if sendmail:
@@ -114,7 +114,7 @@ def main():
             print("[FAIL] '"+MAILFROM_FILE+"' not found")
             sys.exit()
 
-        if verbose == 2:
+        if verbose >= 2:
             print("[INFO] configured mailfrom: "+mailfrom_mail.decode('utf-8'))
 
     # --- MAILSTO_FILE
@@ -129,7 +129,7 @@ def main():
             print("[FAIL] '"+MAILSTO_FILE+"' not found")
             sys.exit()
 
-        if verbose == 2: list_mailsto(mailsto)
+        if verbose >= 2: list_mailsto(mailsto)
 
     # --- CHECK IP -------------------------------------------------------------
     (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
