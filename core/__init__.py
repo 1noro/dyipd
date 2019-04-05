@@ -41,12 +41,6 @@ myip_change = False
 
 ### MAIN #######################################################################
 def main():
-
-    log.p.info("hola")
-    log.p.ok("hola")
-    log.p.warning("hola")
-    log.p.fail("hola")
-    log.p.exit("hola")
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
@@ -63,7 +57,7 @@ def main():
     if os.path.isfile(DDNS_FILE):
         domains = utils.compose_domains(DDNS_FILE)
     else:
-        print("[FAIL] '"+DDNS_FILE+"' not found")
+        log.p.fail("'"+DDNS_FILE+"' not found")
         sys.exit()
 
     if verbose >= 2: utils.list_configured_domains(domains, TABULAR)
@@ -77,11 +71,11 @@ def main():
             mailfrom_pass = credarr[1].replace('\n','').encode('utf-8')
             mailfrom_mail = mailfrom_user
         else:
-            print("[FAIL] '"+MAILFROM_FILE+"' not found")
+            log.p.fail("'"+MAILFROM_FILE+"' not found")
             sys.exit()
 
         if verbose >= 2:
-            print("[INFO] configured mailfrom: "+mailfrom_mail.decode('utf-8'))
+            log.p.info("configured mailfrom: "+mailfrom_mail.decode('utf-8'))
 
     # --- MAILSTO_FILE
     if sendmail:
@@ -92,7 +86,7 @@ def main():
                 if (m != ""):
                     mailsto.append(m.encode('utf-8'))
         else:
-            print("[FAIL] '"+MAILSTO_FILE+"' not found")
+            log.p.fail("'"+MAILSTO_FILE+"' not found")
             sys.exit()
 
         if verbose >= 2: utils.list_mailsto(mailsto, TABULAR)
@@ -106,15 +100,15 @@ def main():
 
         # --- NOTIFY VIA EMAIL -------------------------------------------------
         if sendmail and myip_change:
-            if verbose >= 1: print("[INFO] sending notification email...")
+            if verbose >= 1: log.p.info("sending notification email...")
             mail.send(mailfrom_user, mailfrom_pass, mailfrom_mail, mailsto, myip, verbose)
 
         # --- ENDO OF LOOP CHECK -----------------------------------------------
         if loop:
             if verbose >= 1:
-                print("[LOOP] end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
+                log.p.loop("end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
             time.sleep(LOOP_TIME)
         else:
             break
 
-    if verbose >= 1: print("[EXIT] end of the execution")
+    if verbose >= 1: log.p.exit("end of the execution")

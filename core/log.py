@@ -20,3 +20,4 @@ class p:
     def warning(txt):   print(bcolor.WARNING + "[WARN] " + txt + bcolor.ENDC)
     def fail(txt):      print(bcolor.FAIL + "[FAIL] " + txt + bcolor.ENDC)
     def exit(txt):      print(bcolor.NONE + "[EXIT] " + txt + bcolor.ENDC)
+    def loop(txt):      print(bcolor.OKBLUE + "[LOOP] " + txt + bcolor.ENDC)
