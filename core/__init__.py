@@ -8,6 +8,7 @@ import time
 
 import core
 from core import utils
+from core import log
 
 import modules
 from modules import ip
@@ -40,6 +41,12 @@ myip_change = False
 
 ### MAIN #######################################################################
 def main():
+
+    log.p.info("hola")
+    log.p.ok("hola")
+    log.p.warning("hola")
+    log.p.fail("hola")
+    log.p.exit("hola")
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
