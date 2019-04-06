@@ -4,6 +4,8 @@
 ### IMPORTS ####################################################################
 from optparse import OptionParser
 
+import core.log as log
+
 ### FUNCTIONS ##################################################################
 def options_definition():
     parser = OptionParser()
@@ -44,7 +46,7 @@ def compose_domains(file):
     return out
 
 def list_configured_domains(domains, t):
-    print("[INFO] configured domains:")
+    log.p.info("configured domains:")
     str = ""
     for d in domains:
         str = d["dname"]+" ( "
@@ -54,6 +56,6 @@ def list_configured_domains(domains, t):
         print(t+str)
 
 def list_mailsto(mailsto, t):
-    print("[INFO] configured mails to notify:")
+    log.p.info("configured mails to notify:")
     for m in mailsto:
         print(t+m.decode('utf-8'))

@@ -21,3 +21,5 @@ class p:
     def fail(txt):      print(bcolor.FAIL + "[FAIL] " + txt + bcolor.ENDC)
     def exit(txt):      print(bcolor.NONE + "[EXIT] " + txt + bcolor.ENDC)
     def loop(txt):      print(bcolor.OKBLUE + "[LOOP] " + txt + bcolor.ENDC)
+    def cin(txt):      print(bcolor.INFO + "[ <--] " + txt + bcolor.ENDC)
+    def cout(txt):      print(bcolor.INFO + "[-->] " + txt + bcolor.ENDC)
