@@ -23,3 +23,5 @@ class p:
     def loop(txt):      print(bcolor.OKBLUE + "[LOOP] " + txt + bcolor.ENDC)
     def cin(txt):      print(bcolor.INFO + "[ <--] " + txt + bcolor.ENDC)
     def cout(txt):      print(bcolor.INFO + "[-->] " + txt + bcolor.ENDC)
+    def sslcin(txt):      print(bcolor.INFO + "[ <~~] " + txt + bcolor.ENDC)
+    def sslcout(txt):      print(bcolor.INFO + "[~~>] " + txt + bcolor.ENDC)
