@@ -6,6 +6,8 @@ import socket
 
 import xml.etree.ElementTree as ET
 
+import core.log as log
+
 ### FUNCTIONS ##################################################################
 def namecheap_http_update(web, verbose):
     out = False
@@ -18,36 +20,36 @@ def namecheap_http_update(web, verbose):
     sock.connect((host, port))
 
     sdata = b'GET /' + bweb + b' HTTP/1.1\r\n'
-    if verbose >= 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: log.p.cout(repr(sdata))
     sock.sendall(sdata)
     sdata = b'Host: ' + bhost + b'\r\n'
-    if verbose >= 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: log.p.cout(repr(sdata))
     sock.sendall(sdata)
     sdata = b'\r\n'
-    if verbose >= 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: log.p.cout(repr(sdata))
     sock.sendall(sdata)
     rdata = sock.recv(1024)
     sock.close()
-    if verbose >= 3: print('[ <--] ', repr(rdata))
+    if verbose >= 3: log.p.cin(repr(rdata))
 
     rdataarr = rdata.decode("utf-8").split('\r\n')
     expected = 'HTTP/1.1 200 OK'
     if rdataarr[0] != expected:
-            print('[FAIL] "'+expected+'" reply not received from server')
+            log.p.fail('"'+expected+'" reply not received from server')
     xml_tree = ET.fromstring(rdataarr[len(rdataarr)-1])
     if (xml_tree.find('Done').text == 'true'):
         out = True
     else:
-        print('[FAIL] operation not "Done"')
+        log.p.fail('operation not "Done"')
 
     return out
 
 def update(domains, verbose):
-    if verbose >= 1: print("[INFO] updating ip in the dynamic dns")
+    if verbose >= 1: log.p.info("updating ip in the dynamic dns")
     for domain in domains:
         for dhost in domain["hosts"]:
             web = 'update?domain='+domain["dname"]+'&password='+domain["dpass"]+'&host='+dhost
             if namecheap_http_update(web, verbose):
-                if verbose >= 1: print('[ OK ] '+dhost+'.'+domain["dname"])
+                if verbose >= 1: log.p.ok(dhost+'.'+domain["dname"])
             else:
-                if verbose >= 1: print('[FAIL] '+dhost+'.'+domain["dname"])
+                if verbose >= 1: log.p.fail(dhost+'.'+domain["dname"])
