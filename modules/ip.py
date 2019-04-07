@@ -10,10 +10,10 @@ import core.log as log
 
 ### FUNCTIONS ##################################################################
 def mysend(sock, sdata, expected, verbose):
-    if verbose >= 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: log.p.cout(repr(sdata))
     sock.sendall(sdata)
     rdata = sock.recv(1024)
-    if verbose >= 3: print('[ <--] ', repr(rdata))
+    if verbose >= 3: log.p.cin(repr(rdata))
     if rdata.decode("utf-8")[:3] != expected:
         log.p.fail(expected+' reply not received from server')
     return rdata
@@ -25,7 +25,13 @@ def get_my_ip_from_gmail(verbose):
     port = 25
     if verbose >= 2: log.p.info("getting my ip from "+host+":"+str(port))
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((host, port))
+    try:
+        sock.connect((host, port))
+    except OSError as e:
+        # log.p.fail("OSError: [Errno "+str(e.errno)+"]")
+        log.p.fail("OSError: "+str(e))
+    except:
+        log.p.fail("something else went wrong")
     rdata = sock.recv(1024)
     if verbose >= 3: print('[ <--] ', str(rdata))
     if rdata.decode("utf-8")[:3] != '220':
