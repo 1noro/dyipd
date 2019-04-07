@@ -43,7 +43,7 @@ version=open("version.txt").read().replace('\n','')
 
 ### MAIN #######################################################################
 def main():
-    log.p.info("starting dyipd v"+version)
+    if verbose >= 1: log.p.info("starting dyipd v"+version)
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
