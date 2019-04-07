@@ -1,7 +1,6 @@
 # dyipd
 
 falta cubrir errores como:
-- que no haya conexón a internet
 - que gmail no responda
 - que namecheap no responda
 
