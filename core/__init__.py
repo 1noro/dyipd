@@ -36,11 +36,14 @@ mailfrom_mail = b''
 mailsto = []
 myip = ''
 myip_change = False
+mylastip = ''
+version=open("version.txt").read().replace('\n','')
 
 ### NON EDITABLE VARIABLES #####################################################
 
 ### MAIN #######################################################################
 def main():
+    log.p.info("starting dyipd v"+version)
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
@@ -92,8 +95,10 @@ def main():
         if verbose >= 2: utils.list_mailsto(mailsto, TABULAR)
 
     while True:
+        if (verbose >= 1) and loop:
+            log.p.loop("beginning of the cycle")
         # --- CHECK IP ---------------------------------------------------------
-        (myip, myip_change) = ip.check_ip(LASTIP_FILE, verbose)
+        (myip, myip_change, mylastip) = ip.check_ip(LASTIP_FILE, verbose)
 
         # --- UPDATE DDNS ------------------------------------------------------
         if myip_change: ddns.update(domains, verbose)
@@ -101,7 +106,7 @@ def main():
         # --- NOTIFY VIA EMAIL -------------------------------------------------
         if sendmail and myip_change:
             if verbose >= 1: log.p.info("sending notification email...")
-            mail.send(mailfrom_user, mailfrom_pass, mailfrom_mail, mailsto, myip, verbose)
+            mail.send(mailfrom_user, mailfrom_pass, mailfrom_mail, mailsto, myip, mylastip, verbose)
 
         # --- ENDO OF LOOP CHECK -----------------------------------------------
         if loop:

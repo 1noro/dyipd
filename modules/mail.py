@@ -7,47 +7,49 @@ import ssl
 import base64
 import datetime
 
+import core.log as log
+
 ### FUNCTIONS ##################################################################
 def by_b64(by):
     b64 = base64.b64encode(by)
     return b64
 
 def mysend(sock, sdata, expected, verbose):
-    if verbose >= 3: print('[--> ] ', repr(sdata))
+    if verbose >= 3: log.p.cout(repr(sdata))
     sock.sendall(sdata)
     rdata = sock.recv(1024)
-    if verbose >= 3: print('[ <--] ', repr(rdata))
+    if verbose >= 3: log.p.cin(repr(rdata))
     if rdata.decode("utf-8")[:3] != expected:
-        print('[FAIL] '+expected+' reply not received from server')
+        log.p.fail(expected+' reply not received from server')
 
 def mysslsend(sslsock, sdata, expected, verbose):
-    if verbose >= 3: print('[~~> ] ', repr(sdata))
+    if verbose >= 3: log.p.sslcout(repr(sdata))
     sslsock.sendall(sdata)
     rdata = sslsock.recv(1024)
-    if verbose >= 3: print('[ <~~] ', repr(rdata))
+    if verbose >= 3: log.p.sslcin(repr(rdata))
     if rdata.decode("utf-8")[:3] != expected:
-        print('[FAIL] '+expected+' reply not received from server')
+        log.p.fail(expected+' reply not received from server')
 
 def mysslonlysend(sslsock, sdata, verbose):
-    if verbose >= 3: print('[~~> ] ', repr(sdata))
+    if verbose >= 3: log.p.sslcout(repr(sdata))
     sslsock.sendall(sdata)
 
-def send(us, ps, mailfrom, mailsto, myip, verbose):
+def send(us, ps, mailfrom, mailsto, myip, mylastip, verbose):
     host = 'smtp.gmail.com'
     bhost = host.encode('utf-8')
     port = 25
-    subject = "[DYIP] Your dynamic IP has changed to "+myip
+    subject = "[DYIP] New IP ("+myip+")"
     bsubject = subject.encode('utf-8')
-    text = "Your dynamic IP has changed to '"+myip+"'."
+    text = "Your dynamic IP has changed from "+mylastip+" to "+myip+"."
     btext = text.encode('utf-8')
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))
 
     rdata = sock.recv(1024)
-    if verbose >= 3: print('[ <--] ', str(rdata))
+    if verbose >= 3: log.p.cin(str(rdata))
     if rdata.decode("utf-8")[:3] != '220':
-        print('[FAIL] 220 reply not received from server')
+        log.p.fail('220 reply not received from server')
 
     mysend(sock,b'EHLO '+bhost+b'\r\n','250', verbose)
     mysend(sock,b'STARTTLS\r\n','220', verbose)

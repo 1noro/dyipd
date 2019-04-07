@@ -53,7 +53,7 @@ def check_ip(file, verbose):
         if mylastip != ip_from_gmail:
             myip_change = True
             myip = ip_from_gmail
-            if verbose >= 1: log.p.info("the ip has changed to: "+myip)
+            if verbose >= 1: log.p.sinfo("the ip has changed to: "+myip)
             f = open(file, "w+")
             f.write(myip+"\n")
             f.close()
@@ -67,10 +67,10 @@ def check_ip(file, verbose):
         ip_from_gmail = get_my_ip_from_gmail(verbose)
         if verbose >= 2: log.p.info("ip from gmail: "+ip_from_gmail)
         myip = ip_from_gmail
-        if verbose >= 1: log.p.info("the new ip is: "+myip)
+        if verbose >= 1: log.p.sinfo("the new ip is: "+myip)
         f = open(file, "w+")
         f.write(myip+"\n")
         f.close()
         if verbose >= 2: log.p.info("'"+file+"' saved with the new ip")
 
-    return (myip, myip_change)
+    return (myip, myip_change, mylastip)
