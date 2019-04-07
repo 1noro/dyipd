@@ -116,9 +116,9 @@ def main():
             try:
                 time.sleep(LOOP_TIME)
             except KeyboardInterrupt:
-                log.p.exit("KeyboardInterrupt: end of the execution, bye :)")
+                print("\nbye (~‾▿‾)~")
                 sys.exit()
         else:
             break
 
-    if verbose >= 1: log.p.exit("end of the execution, bye :)")
+    if verbose >= 1: log.p.exit("end of the execution")
