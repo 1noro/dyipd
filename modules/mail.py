@@ -40,7 +40,10 @@ def send(us, ps, mailfrom, mailsto, myip, mylastip, verbose):
     port = 25
     subject = "[DYIP] New IP ("+myip+")"
     bsubject = subject.encode('utf-8')
-    text = "Your dynamic IP has changed from "+mylastip+" to "+myip+"."
+    if mylastip != '':
+        text = "Your dynamic IP has changed from "+mylastip+" to "+myip+"."
+    else:
+        text = "Your dynamic IP has changed to "+myip+"."
     btext = text.encode('utf-8')
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
