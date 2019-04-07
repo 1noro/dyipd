@@ -33,7 +33,7 @@ def get_my_ip_from_gmail(verbose):
     except:
         log.p.fail("something else went wrong")
     rdata = sock.recv(1024)
-    if verbose >= 3: print('[ <--] ', str(rdata))
+    if verbose >= 3: log.p.cin(str(rdata))
     if rdata.decode("utf-8")[:3] != '220':
         log.p.fail('220 reply not received from server')
     ehlo_rdata = mysend(sock, b'EHLO '+bhost+b'\r\n', '250', verbose)
