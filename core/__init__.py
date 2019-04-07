@@ -18,7 +18,7 @@ from modules import mail
 ### EDITABLE VARIABLES #########################################################
 # 1m = 60s, 5m = 300s, 10m = 600s, 15m = 900s, 30m = 1800s
 # 1h = 3600s, 2h = 7200, 5h = 18000s, 12h = 43200s, 24h = 86400s, 48h = 172800s
-LOOP_TIME = 10
+LOOP_TIME = 1800
 TABULAR = " "*8
 DDNS_FILE = "data/namecheap-data.txt"
 MAILFROM_FILE = "data/mailfrom.txt"
