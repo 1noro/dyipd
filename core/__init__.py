@@ -43,7 +43,6 @@ version=open("version.txt").read().replace('\n','')
 
 ### MAIN #######################################################################
 def main():
-    if verbose >= 1: log.p.info("starting dyipd v"+version)
     # --- Parameters -----------------------------------------------------------
     (options, args) = utils.options_definition()
     # --- verbose
@@ -56,6 +55,7 @@ def main():
     loop = options.loop
 
     # --- CHECK CONFIG ---------------------------------------------------------
+    if verbose >= 1: log.p.info("starting dyipd v"+version)
     # --- DDNS_FILE
     if os.path.isfile(DDNS_FILE):
         domains = utils.compose_domains(DDNS_FILE)
