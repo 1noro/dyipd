@@ -1,0 +1,11 @@
+<domain1>::<domain1_dynamic_dns_key>
+<domain1_host1>
+<domain1_host2>
+<domain1_host3>
+<domain1_host4>
+
+<domain2>::<domain2_dynamic_dns_key>
+<domain2_host1>
+<domain2_host2>
+<domain2_host3>
+<domain2_host4>
