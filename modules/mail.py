@@ -27,7 +27,9 @@ def mysslsend(sslsock, sdata, expected, verbose):
     sslsock.sendall(sdata)
     rdata = sslsock.recv(1024)
     if verbose >= 3: log.p.sslcin(repr(rdata))
-    if rdata.decode("utf-8")[:3] != expected:
+    if rdata.decode("utf-8")[:3] == '535':
+        log.p.fail("the credentials of the mailfrom are incorrect")
+    elif rdata.decode("utf-8")[:3] != expected:
         log.p.fail(expected+' reply not received from server')
 
 def mysslonlysend(sslsock, sdata, verbose):
@@ -76,6 +78,7 @@ def send(us, ps, mailfrom, mailsto, myip, mylastip, verbose):
     mysslonlysend(sslsock, b'.\r\n', verbose)
 
     mysslsend(sslsock, b'QUIT\r\n','250', verbose)
+
 
     sslsock.close()
     sock.close()
