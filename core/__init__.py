@@ -113,8 +113,12 @@ def main():
         if loop:
             if verbose >= 1:
                 log.p.loop("end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
-            time.sleep(LOOP_TIME)
+            try:
+                time.sleep(LOOP_TIME)
+            except KeyboardInterrupt:
+                log.p.exit("KeyboardInterrupt: end of the execution, bye :)")
+                sys.exit()
         else:
             break
 
-    if verbose >= 1: log.p.exit("end of the execution")
+    if verbose >= 1: log.p.exit("end of the execution, bye :)")
