@@ -96,7 +96,7 @@ def main():
 
     while True:
         if (verbose >= 1) and loop:
-            log.p.loop("beginning of the cycle")
+            log.p.loop("["+utils.get_new_strtime()+"] beginning of the cycle")
         # --- CHECK IP ---------------------------------------------------------
         (myip, myip_change, mylastip) = ip.check_ip(LASTIP_FILE, verbose)
         if (myip != '') or (mylastip != ''):
@@ -112,7 +112,7 @@ def main():
         # --- ENDO OF LOOP CHECK -----------------------------------------------
         if loop:
             if verbose >= 1:
-                log.p.loop("end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
+                log.p.loop("["+utils.get_new_strtime()+"] end of cycle, waiting for "+str(LOOP_TIME)+" seconds...")
             try:
                 time.sleep(LOOP_TIME)
             except KeyboardInterrupt:

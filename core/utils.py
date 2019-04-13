@@ -2,6 +2,8 @@
 # by inoro
 
 ### IMPORTS ####################################################################
+import datetime
+
 from optparse import OptionParser
 
 import core.log as log
@@ -59,3 +61,8 @@ def list_mailsto(mailsto, t):
     log.p.info("configured mails to notify:")
     for m in mailsto:
         print(t+m.decode('utf-8'))
+
+def get_new_strtime():
+    now = datetime.datetime.now()
+    strnow = now.strftime("%Y-%m-%d %H:%M:%S")
+    return strnow
