@@ -1,5 +1,7 @@
 # dyipd
 
+Encargado de notificar a Namaecheap de que la IP de mi casa cambia.
+
 falta cubrir errores como:
 - que gmail no responda
 - que namecheap no responda
