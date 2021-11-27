@@ -32,12 +32,22 @@ def namecheap_http_update(web, verbose):
     sock.close()
     if verbose >= 3: log.p.cin(repr(rdata))
 
-    rdataarr = rdata.decode("utf-8").split('\r\n')
+    # rdataarr = rdata.decode("utf-8").split('\r\n')
+    # expected = 'HTTP/1.1 200 OK'
+    # if rdataarr[0] != expected:
+    #         log.p.fail('"'+expected+'" reply not received from server')
+    # xml_tree = ET.fromstring(rdataarr[len(rdataarr)-4])
+    # if (xml_tree.find('Done').text == 'true'):
+    #     out = True
+    # else:
+    #     log.p.fail('operation not "Done"')
+
+    rdata_decoded = rdata.decode("utf-8")
     expected = 'HTTP/1.1 200 OK'
-    if rdataarr[0] != expected:
+    if expected not in rdata_decoded:
             log.p.fail('"'+expected+'" reply not received from server')
-    xml_tree = ET.fromstring(rdataarr[len(rdataarr)-1])
-    if (xml_tree.find('Done').text == 'true'):
+    expected = '<Done>true</Done>'
+    if expected in rdata_decoded:
         out = True
     else:
         log.p.fail('operation not "Done"')
